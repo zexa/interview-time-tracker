@@ -5,12 +5,22 @@ networks:
     driver: bridge
 
 services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    volumes:
+      - ..:/var/www
+    ports:
+      - 8080:80
+    networks:
+      - network_interview_time_tracker
   fpm:
     container_name: fpm
     build:
       context: ./fpm
     volumes:
-      - '..:/var/www'
+      - ..:/var/www
     networks:
       - network_interview_time_tracker
 
