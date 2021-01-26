@@ -1,0 +1,16 @@
+version: '3.8'
+
+networks:
+  network_interview_time_tracker:
+    driver: bridge
+
+services:
+  fpm:
+    container_name: fpm
+    build:
+      context: ./fpm
+    volumes:
+      - '..:/var/www'
+    networks:
+      - network_interview_time_tracker
+
