@@ -7,6 +7,11 @@ namespace App\Tests\Serializer;
 use App\Entity\PublicTask;
 use App\Serializer\PublicTaskSerializer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class PublicTaskSerializerTest extends TestCase
 {
@@ -25,7 +30,13 @@ class PublicTaskSerializerTest extends TestCase
 
     public function setup(): void
     {
-        $this->publicTaskSerializer = new PublicTaskSerializer();
+        $this->publicTaskSerializer = new PublicTaskSerializer(
+            new DateTimeNormalizer(),
+            new DateIntervalNormalizer(),
+            new GetSetMethodNormalizer(),
+            new JsonEncoder(),
+            new CsvEncoder()
+        );
         $this->publicTaskObject = new PublicTask(
             'test_title',
             ['test_comment'],
@@ -41,22 +52,22 @@ EOL;
     public function testDeserializePublicTask()
     {
         $this->assertEquals(
+            $this->publicTaskObject,
             $this->publicTaskSerializer->deserializePublicTask(
                 $this->publicTaskJson,
                 PublicTaskSerializer::FORMAT_JSON
-            ),
-            $this->publicTaskObject
+            )
         );
     }
 
     public function testSerializePublicTask()
     {
         $this->assertEquals(
+            $this->publicTaskJson,
             $this->publicTaskSerializer->serializePublicTask(
                 $this->publicTaskObject,
                 PublicTaskSerializer::FORMAT_JSON
-            ),
-            $this->publicTaskJson
+            )
         );
     }
 }

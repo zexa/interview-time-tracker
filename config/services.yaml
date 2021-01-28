@@ -29,3 +29,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # for some reason Symfony's default normalizers and encoders are not
+    # registered by default
+    Symfony\Component\Serializer\Normalizer\:
+        resource: '../vendor/symfony/serializer/Normalizer/'
+
+    Symfony\Component\Serializer\Encoder\:
+        resource: '../vendor/symfony/serializer/Encoder/'

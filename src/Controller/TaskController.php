@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Comment;
-use App\Entity\PublicTask;
-use App\Entity\Task;
 use App\Entity\User;
 use App\Serializer\PublicTaskSerializer;
-use App\Generator\UuidGenerator;
 use App\Transformer\TaskTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\ORMException;
 use Exception;
-use http\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Generator\CombGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController
 {
@@ -52,9 +46,10 @@ class TaskController
     /**
      * @Route("/tasks", methods="post")
      * @param Request $request
+     * @param UserInterface|User $user
      * @return Response
      */
-    public function createTask(Request $request): Response
+    public function createTask(Request $request, UserInterface $user): Response
     {
         try {
             $taskRequest = $this->publicTaskSerializer->deserializePublicTask(
@@ -62,22 +57,26 @@ class TaskController
                 PublicTaskSerializer::FORMAT_JSON
             );
         } catch (Exception $exception) {
-            return new Response("Order request has wrong format");
+            return new Response(
+                'Invalid request order',
+                400
+            );
         }
 
         if ($taskRequest->getHash() !== null) {
-            return new Response("New orders cannot contain predefined hash");
+            return new Response(
+                'New orders cannot contain predefined hash',
+                400
+            );
         }
 
-//        try {
-//            $this->taskTransformer->fromPublicTask($taskRequest);
-//        } catch (NoResultException | NonUniqueResultException $exception) {
-//            return new Response('Internal server error');
-//        }
-
-        return new Response($this->publicTaskSerializer->serializePublicTask(
-            $taskRequest,
-            PublicTaskSerializer::FORMAT_JSON
-        ));
+        try {
+            return new Response($this->publicTaskSerializer->serializePublicTask(
+                $this->taskTransformer->intoPublicTask($this->taskTransformer->fromPublicTask($taskRequest, $user)),
+                PublicTaskSerializer::FORMAT_JSON
+            ));
+        } catch (NoResultException | NonUniqueResultException $exception) {
+            return new Response('Internal server error', 500);
+        }
     }
 }

@@ -17,11 +17,16 @@ class PublicTaskSerializer extends Serializer
     const FORMAT_JSON = 'json';
     const FORMAT_CSV = 'csv';
 
-    public function __construct()
-    {
+    public function __construct(
+        DateTimeNormalizer $dateTimeNormalizer,
+        DateIntervalNormalizer $dateIntervalNormalizer,
+        GetSetMethodNormalizer $getSetMethodNormalizer,
+        JsonEncoder $jsonEncoder,
+        CsvEncoder $csvEncoder
+    ) {
         parent::__construct(
-            [new DateTimeNormalizer(), new DateIntervalNormalizer(), new GetSetMethodNormalizer()],
-            [new JsonEncoder(), new CsvEncoder()]
+            [$dateTimeNormalizer, $dateIntervalNormalizer, $getSetMethodNormalizer],
+            [$jsonEncoder, $csvEncoder]
         );
     }
 
