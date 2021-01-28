@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,22 @@ class TaskRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
+    }
+
+    /**
+     * @param string $hash
+     * @return Task
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findByHash(string $hash): Task
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.hash = :hash')
+            ->setParameter('hash', $hash)
+            ->getQuery()
+            ->getSingleResult()
+        ;
     }
 
     // /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateInterval;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 class PublicTask
@@ -14,28 +15,34 @@ class PublicTask
      */
     private $title;
     /**
-     * @var string
+     * @var string[]
      */
-    private $comment;
+    private $comments;
     /**
-     * @var DateTimeInterface
+     * @var DateTimeImmutable
      */
     private $date;
     /**
      * @var DateInterval
      */
     private $duration;
+    /**
+     * @var string|null
+     */
+    private $hash;
 
     public function __construct(
         string $title,
-        string $comment,
+        array $comments,
         DateTimeInterface $date,
-        DateInterval $duration
+        DateInterval $duration,
+        ?string $hash
     ) {
         $this->title = $title;
-        $this->comment = $comment;
+        $this->comments = $comments;
         $this->date = $date;
         $this->duration = $duration;
+        $this->hash = $hash;
     }
 
     /**
@@ -48,42 +55,50 @@ class PublicTask
 
     /**
      * @param string $title
+     * @return PublicTask
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getComment(): string
+    public function getComments(): array
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
-     * @param string $comment
+     * @param array $comments
      */
-    public function setComment(string $comment): void
+    public function setComments(array $comments): self
     {
-        $this->comment = $comment;
+        $this->comments = $comments;
+
+        return $this;
     }
 
     /**
-     * @return DateTimeInterface
+     * @return DateTimeImmutable
      */
-    public function getDate(): DateTimeInterface
+    public function getDate(): DateTimeImmutable
     {
         return $this->date;
     }
 
     /**
-     * @param DateTimeInterface $date
+     * @param DateTimeImmutable $date
+     * @return PublicTask
      */
-    public function setDate(DateTimeInterface $date): void
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
+
+        return $this;
     }
 
     /**
@@ -96,10 +111,31 @@ class PublicTask
 
     /**
      * @param DateInterval $duration
+     * @return PublicTask
      */
-    public function setDuration(DateInterval $duration): void
+    public function setDuration(DateInterval $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string|null $hash
+     * @return PublicTask
+     */
+    public function setHash(?string $hash): self
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
 }
