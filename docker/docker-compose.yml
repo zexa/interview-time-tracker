@@ -26,9 +26,10 @@ services:
   postgresql:
     container_name: posgresql
     image: postgres:9.6.20-alpine
+    ports:
+      - 8050:5432
     environment:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=pass
     networks:
       - network_interview_time_tracker
-
