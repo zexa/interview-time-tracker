@@ -60,4 +60,4 @@ services:
         calls:
             - register: ['@App\Generator\CsvReportGenerator']
             - register: ['@App\Generator\PdfReportGenerator']
-
+            - register: ['@App\Generator\XlsxReportGenerator']

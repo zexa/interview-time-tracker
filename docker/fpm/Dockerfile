@@ -18,7 +18,14 @@ RUN apk add --no-cache $PHPIZE_DEPS \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    # replace 172.17.0.1 with host.docker.internal if running on windows or mac
     && echo "xdebug.client_host=172.17.0.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+RUN apk add --no-cache zlib-dev libpng-dev \
+    && docker-php-ext-install gd
+
+RUN apk add libzip-dev \
+    && docker-php-ext-install zip
 
 RUN rm -rf /var/www/html
 
