@@ -16,18 +16,15 @@ class CsvReportGenerator implements ReportGeneratorInterface
 
     private PublicTaskSerializer $publicTaskSerializer;
     private EntityManagerInterface $entityManager;
-    private string $savePath;
     private FileNameGenerator $fileNameGenerator;
 
     public function __construct(
         PublicTaskSerializer $publicTaskSerializer,
         EntityManagerInterface $entityManager,
-        string $savePath,
         FileNameGenerator $fileNameGenerator
     ) {
         $this->publicTaskSerializer = $publicTaskSerializer;
         $this->entityManager = $entityManager;
-        $this->savePath = $savePath;
         $this->fileNameGenerator = $fileNameGenerator;
     }
 
@@ -41,17 +38,10 @@ class CsvReportGenerator implements ReportGeneratorInterface
      */
     public function generate(array $tasks, ReportParameters $reportParameters): File
     {
-        $offset = 0;
-        $filePath = $this->fileNameGenerator->generateWithPath($this->savePath, $reportParameters, $offset);
-        while (file_exists($filePath)) {
-            $offset++;
-            $filePath = $this->fileNameGenerator->generateWithPath($this->savePath, $reportParameters, $offset);
-        }
-
+        $filePath = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
         $fileResource = fopen($filePath, 'w');
-
         $file = (new File())
-            ->setName($this->fileNameGenerator->generate($reportParameters, $offset))
+            ->setName($this->fileNameGenerator->generateFrontendFilename($reportParameters))
             ->setPath($filePath)
             ->setOwner($reportParameters->getUser())
             ->setSize((string)(int)filesize($filePath))

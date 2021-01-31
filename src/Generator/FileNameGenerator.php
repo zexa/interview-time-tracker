@@ -9,44 +9,45 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class FileNameGenerator
 {
-    const FILE_NAME_FORMAT = '%s_%s_%s_%s.%s';
+    const FILE_NAME_FORMAT = 'report_%s_%s_%s.%s';
 
-    /**
-     * @var DateTimeNormalizer
-     */
-    private $dateTimeNormalizer;
+    private string $savePath;
+    private UuidGenerator $uuidGenerator;
 
     public function __construct(
-        DateTimeNormalizer $dateTimeNormalizer
+        string $savePath,
+        UuidGenerator $uuidGenerator
     ) {
-        $this->dateTimeNormalizer = $dateTimeNormalizer;
+        $this->savePath = $savePath;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
      * @param ReportParameters $reportParameters
-     * @param int $offset
      * @return string
      */
-    public function generate(ReportParameters $reportParameters, int $offset): string
+    public function generateFrontendFilename(ReportParameters $reportParameters): string
     {
         return sprintf(
             self::FILE_NAME_FORMAT,
             $reportParameters->getUser()->getEmail(),
             $reportParameters->getDateFrom(),
             $reportParameters->getDateTo(),
-            $offset,
             $reportParameters->getFormat()
         );
     }
 
+    public function generateBackendFilename(ReportParameters $reportParameters): string
+    {
+        return $this->uuidGenerator->generateString();
+    }
+
     /**
-     * @param string $path
      * @param ReportParameters $reportParameters
-     * @param int $offset
      * @return string
      */
-    public function generateWithPath(string $path, ReportParameters $reportParameters, int $offset): string
+    public function generateBackendFilepath(ReportParameters $reportParameters): string
     {
-        return $path . '/' . $this->generate($reportParameters, $offset);
+        return $this->savePath . '/' . $this->generateBackendFilename($reportParameters);
     }
 }

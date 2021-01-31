@@ -44,7 +44,7 @@ class ReportController extends AbstractController
     /**
      * @Route("/report", name="report")
      * @param Request $request
-     * @param UserInterface|User $user
+     * @param UserInterface&User $user
      * @return Response
      */
     public function getReport(Request $request, UserInterface $user): Response
@@ -57,7 +57,7 @@ class ReportController extends AbstractController
                 $user
             );
         } catch (ExceptionInterface $exception) {
-            return new Response('failed building report parameters: ' . $exception->getMessage(), 400);
+            return new Response('Invalid request format', 400);
         }
 
         $tasks = $this->taskRepository->findByUserAndDateRange(
@@ -76,7 +76,7 @@ class ReportController extends AbstractController
                 ->generate($publicTasks ?? [], $reportParameters)
             ;
         } catch (InvalidArgumentException $exception) {
-            return new Response('failed generating report: ' . $exception->getMessage(), 400);
+            return new Response('Invalid request format', 400);
         }
 
         return new Response(

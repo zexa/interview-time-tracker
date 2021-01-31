@@ -38,7 +38,7 @@ services:
     Symfony\Component\Serializer\Encoder\:
         resource: '../vendor/symfony/serializer/Encoder/'
 
-    App\Generator\CsvReportGenerator:
+    App\Generator\FileNameGenerator:
         arguments:
             $savePath: '/reports'
 
