@@ -11,14 +11,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFactory
 {
-    /**
-     * @var UuidGenerator
-     */
-    private $uuidGenerator;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private UuidGenerator $uuidGenerator;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
         UuidGenerator $uuidGenerator,

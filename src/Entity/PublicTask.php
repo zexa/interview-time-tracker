@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateInterval;
-use DateTimeImmutable;
 use DateTimeInterface;
 
 class PublicTask
@@ -15,10 +14,7 @@ class PublicTask
      * @var string[]
      */
     private array $comments;
-    /**
-     * @var DateTimeImmutable
-     */
-    private $date;
+    private DateTimeInterface $date;
     private DateInterval $duration;
     private ?string $hash;
 
@@ -36,18 +32,11 @@ class PublicTask
         $this->hash = $hash;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return PublicTask
-     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -64,7 +53,8 @@ class PublicTask
     }
 
     /**
-     * @param array $comments
+     * @param string[] $comments
+     * @return PublicTask
      */
     public function setComments(array $comments): self
     {
@@ -73,37 +63,23 @@ class PublicTask
         return $this;
     }
 
-    /**
-     * @return DateTimeImmutable
-     */
-    public function getDate(): DateTimeImmutable
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @param DateTimeImmutable $date
-     * @return PublicTask
-     */
-    public function setDate(DateTimeImmutable $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    /**
-     * @return DateInterval
-     */
     public function getDuration(): DateInterval
     {
         return $this->duration;
     }
 
-    /**
-     * @param DateInterval $duration
-     * @return PublicTask
-     */
     public function setDuration(DateInterval $duration): self
     {
         $this->duration = $duration;
@@ -111,18 +87,11 @@ class PublicTask
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getHash(): ?string
     {
         return $this->hash;
     }
 
-    /**
-     * @param string|null $hash
-     * @return PublicTask
-     */
     public function setHash(?string $hash): self
     {
         $this->hash = $hash;

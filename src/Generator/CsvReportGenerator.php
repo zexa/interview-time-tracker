@@ -6,6 +6,7 @@ namespace App\Generator;
 
 use App\Entity\File;
 use App\Entity\ReportParameters;
+use App\Factory\FileFactory;
 use App\Serializer\PublicTaskSerializer;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,15 +18,18 @@ class CsvReportGenerator implements ReportGeneratorInterface
     private PublicTaskSerializer $publicTaskSerializer;
     private EntityManagerInterface $entityManager;
     private FileNameGenerator $fileNameGenerator;
+    private FileFactory $fileFactory;
 
     public function __construct(
         PublicTaskSerializer $publicTaskSerializer,
         EntityManagerInterface $entityManager,
-        FileNameGenerator $fileNameGenerator
+        FileNameGenerator $fileNameGenerator,
+        FileFactory $fileFactory
     ) {
         $this->publicTaskSerializer = $publicTaskSerializer;
         $this->entityManager = $entityManager;
         $this->fileNameGenerator = $fileNameGenerator;
+        $this->fileFactory = $fileFactory;
     }
 
     public function getSupportedFormat(): string
@@ -36,28 +40,21 @@ class CsvReportGenerator implements ReportGeneratorInterface
     /**
      * @inheritDoc
      */
-    public function generate(array $tasks, ReportParameters $reportParameters): File
+    public function generate(array $publicTasks, ReportParameters $reportParameters): File
     {
         $filePath = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
         $fileResource = fopen($filePath, 'w');
-        $file = (new File())
-            ->setName($this->fileNameGenerator->generateFrontendFilename($reportParameters))
-            ->setPath($filePath)
-            ->setOwner($reportParameters->getUser())
-            ->setSize((string)(int)filesize($filePath))
-            ->setMimeType(self::MIME_TYPE_CSV)
-        ;
-
-        $this->entityManager->persist($file);
-        $this->entityManager->flush();
-
         fputs(
            $fileResource,
-           $this->publicTaskSerializer->serializePublicTasks($tasks, PublicTaskSerializer::FORMAT_CSV)
+           $this->publicTaskSerializer->serializePublicTasks($publicTasks, PublicTaskSerializer::FORMAT_CSV)
         );
-        fputs($fileResource, "\n" . sizeof($tasks));
+        fputs($fileResource, "\n" . sizeof($publicTasks));
         fclose($fileResource);
 
-        return $file;
+        return $this->fileFactory->createFromReportParameters(
+            $reportParameters,
+            $filePath,
+            self::MIME_TYPE_CSV
+        );
     }
 }

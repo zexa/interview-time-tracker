@@ -1,0 +1,24 @@
+<html>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Time spent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for publicTask in publicTasks %}
+                    <tr>
+                        <td>{{ publicTask.getTitle() }}</td>
+                        <td>{{ publicTask.getDate().format('Y-m-d\TH:i:sP') }}</td>
+                        <td>{{ publicTask.getDuration().format('%rP%yY%mM%dDT%hH%iM%sS') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br />
+        Count: {{ publicTasks|length }}
+    </body>
+</html>

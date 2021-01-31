@@ -6,22 +6,10 @@ namespace App\Entity;
 
 class ReportParameters
 {
-    /**
-     * @var string
-     */
-    private $dateFrom;
-    /**
-     * @var string
-     */
-    private $dateTo;
-    /**
-     * @var string
-     */
-    private $format;
-    /**
-     * @var User
-     */
-    private $user;
+    private string $dateFrom;
+    private string $dateTo;
+    private string $format;
+    private User $user;
 
     public function __construct(
         string $dateFrom,

@@ -96,6 +96,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "dompdf/dompdf": {
+        "version": "v1.0.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -140,6 +143,12 @@
     },
     "phar-io/version": {
         "version": "3.0.4"
+    },
+    "phenx/php-font-lib": {
+        "version": "0.5.2"
+    },
+    "phenx/php-svg-lib": {
+        "version": "v0.3.3"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -196,6 +205,9 @@
     },
     "ramsey/uuid": {
         "version": "4.1.1"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.3.1"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
@@ -455,6 +467,9 @@
     "symfony/stopwatch": {
         "version": "v4.4.19"
     },
+    "symfony/templating": {
+        "version": "v4.4.19"
+    },
     "symfony/translation-contracts": {
         "version": "v2.3.0"
     },
@@ -482,6 +497,9 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.0"
+    },
+    "twig/twig": {
+        "version": "v3.2.1"
     },
     "webmozart/assert": {
         "version": "1.9.1"

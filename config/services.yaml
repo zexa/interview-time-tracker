@@ -42,6 +42,22 @@ services:
         arguments:
             $savePath: '/reports'
 
+    Twig\Loader\FilesystemLoader:
+        arguments:
+            - '/var/www/templates'
+
+    Twig\Environment:
+        arguments:
+            - '@Twig\Loader\FilesystemLoader'
+
+    Dompdf\Dompdf:
+
+    App\Generator\PdfReportGenerator:
+        arguments:
+            $pdfTemplate: 'pdf_template.html.twig'
+
     App\Registry\ReportGeneratorRegistry:
         calls:
             - register: ['@App\Generator\CsvReportGenerator']
+            - register: ['@App\Generator\PdfReportGenerator']
+
