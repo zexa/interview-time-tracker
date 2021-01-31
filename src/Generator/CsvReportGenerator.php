@@ -51,8 +51,6 @@ class CsvReportGenerator implements ReportGeneratorInterface
             $filePath = $this->fileNameGenerator->generateWithPath($this->savePath, $reportParameters, $offset);
         }
 
-        // TODO: Maybe I should think of a way to make sure this would be forwards compatible?
-        // That is, if I were to add more fields in the future, would the csv fields be in the same order?
         $fileResource = fopen($filePath, 'w');
 
         $file = (new File())
