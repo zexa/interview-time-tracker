@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Task;
 use App\Entity\User;
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -47,6 +46,18 @@ class TaskRepository extends ServiceEntityRepository
             ->setParameter('owner', $user)
             ->setParameter('date_from', $dateFrom)
             ->setParameter('date_to', $dateTo)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findPagedByUser(User $user, int $page, int $pageSize): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.owner = :owner')
+            ->setFirstResult($page * $pageSize)
+            ->setMaxResults($pageSize)
+            ->setParameter('owner', $user)
             ->getQuery()
             ->getResult()
         ;

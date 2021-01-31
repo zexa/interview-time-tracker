@@ -10,18 +10,9 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class UserRequestSerializerTest extends TestCase
 {
-    /**
-     * @var UserRequestSerializer
-     */
-    private $userRequestSerializer;
-    /**
-     * @var UserRequest
-     */
-    private $userRequest;
-    /**
-     * @var string
-     */
-    private $userRequestJson;
+    private UserRequestSerializer $userRequestSerializer;
+    private UserRequest $userRequest;
+    private string $userRequestJson;
 
     public function setup(): void
     {
