@@ -15,14 +15,8 @@ use Doctrine\ORM\NoResultException;
 
 class TaskTransformer
 {
-    /**
-     * @var TaskRepository
-     */
-    private $taskRepository;
-    /**
-     * @var UuidGenerator
-     */
-    private $uuidGenerator;
+    private TaskRepository $taskRepository;
+    private UuidGenerator $uuidGenerator;
 
     public function __construct(
         TaskRepository $taskRepository,
@@ -50,6 +44,7 @@ class TaskTransformer
             ->setTitle($publicTask->getTitle())
             ->setDate($publicTask->getDate())
             ->setTimeSpent($publicTask->getDuration())
+            ->setOwner($user)
         ;
 
         foreach($publicTask->getComments() as $comment) {

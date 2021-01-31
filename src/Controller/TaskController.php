@@ -18,20 +18,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController
 {
-    const UUID_LENGTH = 255;
-
-    /**
-     * @var PublicTaskSerializer
-     */
-    private $publicTaskSerializer;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var TaskTransformer
-     */
-    private $taskTransformer;
+    private PublicTaskSerializer $publicTaskSerializer;
+    private EntityManagerInterface $entityManager;
+    private TaskTransformer $taskTransformer;
 
     public function __construct(
         PublicTaskSerializer $publicTaskSerializer,
@@ -46,7 +35,7 @@ class TaskController
     /**
      * @Route("/tasks", methods="post")
      * @param Request $request
-     * @param UserInterface|User $user
+     * @param UserInterface&User $user
      * @return Response
      */
     public function createTask(Request $request, UserInterface $user): Response
@@ -57,10 +46,7 @@ class TaskController
                 PublicTaskSerializer::FORMAT_JSON
             );
         } catch (Exception $exception) {
-            return new Response(
-                'Invalid request order',
-                400
-            );
+            return new Response('Invalid request format', 400);
         }
 
         if ($taskRequest->getHash() !== null) {
@@ -71,8 +57,17 @@ class TaskController
         }
 
         try {
+            $task = $this->taskTransformer->fromPublicTask($taskRequest, $user);
+        } catch (NoResultException | NonUniqueResultException $exception) {
+            return new Response('Internal server error', 500);
+        }
+
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
+
+        try {
             return new Response($this->publicTaskSerializer->serializePublicTask(
-                $this->taskTransformer->intoPublicTask($this->taskTransformer->fromPublicTask($taskRequest, $user)),
+                $this->taskTransformer->intoPublicTask($task),
                 PublicTaskSerializer::FORMAT_JSON
             ));
         } catch (NoResultException | NonUniqueResultException $exception) {

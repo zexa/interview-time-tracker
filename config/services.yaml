@@ -37,3 +37,11 @@ services:
 
     Symfony\Component\Serializer\Encoder\:
         resource: '../vendor/symfony/serializer/Encoder/'
+
+    App\Generator\CsvReportGenerator:
+        arguments:
+            $savePath: '/reports'
+
+    App\Registry\ReportGeneratorRegistry:
+        calls:
+            - register: ['@App\Generator\CsvReportGenerator']

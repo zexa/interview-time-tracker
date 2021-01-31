@@ -39,4 +39,14 @@ class PublicTaskSerializer extends Serializer
     {
         return $this->serialize($publicTask, $format);
     }
+
+    /**
+     * @param array|PublicTask[] $publicTask
+     * @param string $format
+     * @return string
+     */
+    public function serializePublicTasks(array $publicTask, string $format): string
+    {
+        return $this->serialize($publicTask, $format);
+    }
 }

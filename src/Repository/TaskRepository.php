@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -34,6 +36,19 @@ class TaskRepository extends ServiceEntityRepository
             ->setParameter('hash', $hash)
             ->getQuery()
             ->getSingleResult()
+        ;
+    }
+
+    public function findByUserAndDateRange(User $user, string $dateFrom, string $dateTo): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.owner = :owner')
+            ->andWhere('t.date BETWEEN :date_from AND :date_to')
+            ->setParameter('owner', $user)
+            ->setParameter('date_from', $dateFrom)
+            ->setParameter('date_to', $dateTo)
+            ->getQuery()
+            ->getResult()
         ;
     }
 

@@ -85,3 +85,11 @@ Query Parameters:
 * date_to: DateTimeImmutable
 * format: ReportFormat
 
+```
+* susideti typus ant Task entity
+* naudoti maziau type annotationu
+* pasidomet https://symfony.com/doc/4.4/security/form_login_setup.html
+* pasidometi https://stackoverflow.com/questions/24834829/how-do-i-get-symfony-forms-to-work-with-a-rest-api
+* Pasidometi https://symfony.com/doc/current/validation.html
+* https://csv.thephpleague.com/9.0/writer/
+```

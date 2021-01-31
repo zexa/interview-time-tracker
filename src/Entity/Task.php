@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -17,38 +22,38 @@ class Task
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $hash;
+    private ?string $hash;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    private ?User $owner;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="task")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="task", cascade={"persist"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="datetimetz_immutable")
      */
-    private $date;
+    private ?DateTimeImmutable $date;
 
     /**
      * @ORM\Column(type="dateinterval")
      */
-    private $time_spent;
+    private ?DateInterval $timeSpent;
 
     public function __construct()
     {
@@ -126,26 +131,26 @@ class Task
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getTimeSpent(): ?\DateInterval
+    public function getTimeSpent(): ?DateInterval
     {
-        return $this->time_spent;
+        return $this->timeSpent;
     }
 
-    public function setTimeSpent(\DateInterval $time_spent): self
+    public function setTimeSpent(DateInterval $timeSpent): self
     {
-        $this->time_spent = $time_spent;
+        $this->timeSpent = $timeSpent;
 
         return $this;
     }

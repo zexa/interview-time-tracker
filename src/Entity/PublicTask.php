@@ -10,26 +10,17 @@ use DateTimeInterface;
 
 class PublicTask
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private string $title;
     /**
      * @var string[]
      */
-    private $comments;
+    private array $comments;
     /**
      * @var DateTimeImmutable
      */
     private $date;
-    /**
-     * @var DateInterval
-     */
-    private $duration;
-    /**
-     * @var string|null
-     */
-    private $hash;
+    private DateInterval $duration;
+    private ?string $hash;
 
     public function __construct(
         string $title,

@@ -6,6 +6,8 @@ namespace App\Tests\Serializer;
 
 use App\Entity\PublicTask;
 use App\Serializer\PublicTaskSerializer;
+use DateInterval;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -15,18 +17,9 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class PublicTaskSerializerTest extends TestCase
 {
-    /**
-     * @var PublicTaskSerializer
-     */
-    private $publicTaskSerializer;
-    /**
-     * @var PublicTask
-     */
-    private $publicTaskObject;
-    /**
-     * @var string
-     */
-    private $publicTaskJson;
+    private PublicTaskSerializer $publicTaskSerializer;
+    private PublicTask $publicTaskObject;
+    private string $publicTaskJson;
 
     public function setup(): void
     {
@@ -40,8 +33,8 @@ class PublicTaskSerializerTest extends TestCase
         $this->publicTaskObject = new PublicTask(
             'test_title',
             ['test_comment'],
-            new \DateTimeImmutable("2021-01-26"),
-            new \DateInterval('PT10S'),
+            new DateTimeImmutable("2021-01-26"),
+            new DateInterval('PT10S'),
             null
         );
         $this->publicTaskJson = <<<EOL

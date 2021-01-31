@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,17 +23,17 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $hash;
+    private ?string $hash;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private ?string $email;
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="owner")
@@ -41,11 +43,17 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    private ?string $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=File::class, mappedBy="owner")
+     */
+    private $files;
 
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,5 +150,35 @@ class User implements UserInterface
 
     public function eraseCredentials(): void
     {
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+            $file->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        if ($this->files->removeElement($file)) {
+            // set the owning side to null (unless already changed)
+            if ($file->getOwner() === $this) {
+                $file->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

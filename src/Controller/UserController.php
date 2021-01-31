@@ -22,30 +22,12 @@ class UserController extends AbstractController
 {
     const PASSWORD_MIN_LENGTH = 4;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var UserRequestSerializer
-     */
-    private $userRequestSerializer;
-    /**
-     * @var UserFactory
-     */
-    private $userFactory;
-    /**
-     * @var JWTTokenManagerInterface
-     */
-    private $jwtManager;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private EntityManagerInterface $entityManager;
+    private UserRequestSerializer $userRequestSerializer;
+    private UserFactory $userFactory;
+    private JWTTokenManagerInterface $jwtManager;
+    private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
 
     public function __construct(
         EntityManagerInterface $entityManager,

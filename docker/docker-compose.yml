@@ -21,6 +21,9 @@ services:
       context: ./fpm
     volumes:
       - ..:/var/www
+      - reports:/reports
+    ports:
+      - 9001:9001
     networks:
       - network_interview_time_tracker
   postgresql:
@@ -33,3 +36,6 @@ services:
       - POSTGRES_PASSWORD=pass
     networks:
       - network_interview_time_tracker
+
+volumes:
+  reports:
