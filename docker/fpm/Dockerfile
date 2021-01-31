@@ -29,6 +29,7 @@ RUN apk add libzip-dev \
 
 RUN rm -rf /var/www/html
 
-RUN mkdir /reports && chown -R www-data:www-data /reports
+RUN mkdir /reports \
+    && chown -R www-data:www-data /reports
 
 WORKDIR /var/www

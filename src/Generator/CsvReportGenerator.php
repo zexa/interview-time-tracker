@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Generator;
 
+use App\Calculator\DateIntervalCalculator;
 use App\Entity\File;
 use App\Entity\ReportParameters;
+use App\Exception\ReportGenerationException;
 use App\Factory\FileFactory;
 use App\Serializer\PublicTaskSerializer;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class CsvReportGenerator implements ReportGeneratorInterface
 {
@@ -19,17 +22,20 @@ class CsvReportGenerator implements ReportGeneratorInterface
     private EntityManagerInterface $entityManager;
     private FileNameGenerator $fileNameGenerator;
     private FileFactory $fileFactory;
+    private DateIntervalCalculator $dateIntervalCalculator;
 
     public function __construct(
         PublicTaskSerializer $publicTaskSerializer,
         EntityManagerInterface $entityManager,
         FileNameGenerator $fileNameGenerator,
-        FileFactory $fileFactory
+        FileFactory $fileFactory,
+        DateIntervalCalculator $dateIntervalCalculator
     ) {
         $this->publicTaskSerializer = $publicTaskSerializer;
         $this->entityManager = $entityManager;
         $this->fileNameGenerator = $fileNameGenerator;
         $this->fileFactory = $fileFactory;
+        $this->dateIntervalCalculator = $dateIntervalCalculator;
     }
 
     public function getSupportedFormat(): string
@@ -48,7 +54,19 @@ class CsvReportGenerator implements ReportGeneratorInterface
            $fileResource,
            $this->publicTaskSerializer->serializePublicTasks($publicTasks, PublicTaskSerializer::FORMAT_CSV)
         );
-        fputs($fileResource, "\n" . sizeof($publicTasks));
+        fputs($fileResource, "\nCount: " . sizeof($publicTasks));
+        try {
+            fputs(
+                $fileResource,
+                "\nTotal time spent: "
+                . $this->dateIntervalCalculator
+                    ->sumFromPublicTasks($publicTasks)
+                    ->format('%rP%yY%mM%dDT%hH%iM%sS')
+                . "\n"
+            );
+        } catch (Exception $exception) {
+            throw new ReportGenerationException($exception->getMessage());
+        }
         fclose($fileResource);
 
         return $this->fileFactory->createFromReportParameters(

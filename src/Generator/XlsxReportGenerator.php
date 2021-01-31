@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Generator;
 
+use App\Calculator\DateIntervalCalculator;
 use App\Entity\File;
 use App\Entity\ReportParameters;
 use App\Exception\ReportGenerationException;
 use App\Factory\FileFactory;
-use PhpOffice\PhpSpreadsheet\Exception;
+use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as SpreadsheetWriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -20,13 +21,16 @@ class XlsxReportGenerator implements ReportGeneratorInterface
 
     private FileNameGenerator $fileNameGenerator;
     private FileFactory $fileFactory;
+    private DateIntervalCalculator $dateIntervalCalculator;
 
     public function __construct(
         FileNameGenerator $fileNameGenerator,
-        FileFactory $fileFactory
+        FileFactory $fileFactory,
+        DateIntervalCalculator $dateIntervalCalculator
     ) {
         $this->fileNameGenerator = $fileNameGenerator;
         $this->fileFactory = $fileFactory;
+        $this->dateIntervalCalculator = $dateIntervalCalculator;
     }
 
     /**
@@ -67,10 +71,23 @@ class XlsxReportGenerator implements ReportGeneratorInterface
             $row++;
         }
 
-        $worksheet
-            ->setCellValueByColumnAndRow(1, $row+2, 'Count')
-            ->setCellValueByColumnAndRow(2, $row+2, count($publicTasks))
-        ;
+        $row++;
+        $worksheet->setCellValueByColumnAndRow(1, $row, 'Count');
+        $worksheet->setCellValueByColumnAndRow(2, $row, count($publicTasks));
+
+        $row++;
+        $worksheet->setCellValueByColumnAndRow(1, $row, 'Total time');
+        try {
+            $worksheet->setCellValueByColumnAndRow(
+                2,
+                $row,
+                $this->dateIntervalCalculator
+                    ->sumFromPublicTasks($publicTasks)
+                    ->format('%rP%yY%mM%dDT%hH%iM%sS')
+            );
+        } catch (Exception $exception) {
+            throw new ReportGenerationException($exception->getMessage());
+        }
 
         $filePath = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
 
