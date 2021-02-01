@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.8",
         "dompdf/dompdf": "^1.0",
         "lexik/jwt-authentication-bundle": "^2.10",
+        "nelmio/cors-bundle": "^2.1",
         "phpoffice/phpspreadsheet": "^1.16",
         "ramsey/uuid": "^4.1",
         "sensio/framework-extra-bundle": "^5.6",
