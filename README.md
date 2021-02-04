@@ -33,6 +33,11 @@ Nezinau ar spesiu uzsiimti taisymu, todel noriu ~parodyti revieweriu, kad
 suprantu, kad yra spragu~ uzbegti uz akiu revieweriu ir taip issaugoti kuo 
 daugiau balu kaip kandidatas. :smile:
 
+* Controlleriai daro normalizacija ir verslo logika
+  * Payseroje gauciau velniu uz manageriu nenaudojima, o siai uzduociai 
+    nusprendziau, kad man svarbiau atitikti uzduoties reikalavimus.
+  * Maniau, kad dar spesiu pasirefactorinti, bet laiko kaip ir nebera.
+* Truksta testu!
 * Email verifikacija, jeigu appas toliau butu tobulinamas
     * Priesingu atveju butu galima parasyti bota, kuris spamintu naujus acc
 * Tasku kurimo limitacijos. DDos reasons.
