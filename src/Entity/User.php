@@ -105,11 +105,8 @@ class User implements UserInterface
 
     public function removeTask(Task $task): self
     {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getOwner() === $this) {
-                $task->setOwner(null);
-            }
+        if ($this->tasks->removeElement($task) && $task->getOwner() === $this) {
+            $task->setOwner(null);
         }
 
         return $this;
@@ -172,11 +169,8 @@ class User implements UserInterface
 
     public function removeFile(File $file): self
     {
-        if ($this->files->removeElement($file)) {
-            // set the owning side to null (unless already changed)
-            if ($file->getOwner() === $this) {
-                $file->setOwner(null);
-            }
+        if ($this->files->removeElement($file) && $file->getOwner() === $this) {
+            $file->setOwner(null);
         }
 
         return $this;
