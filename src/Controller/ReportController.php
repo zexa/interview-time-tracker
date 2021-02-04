@@ -9,13 +9,13 @@ use App\Entity\User;
 use App\Registry\ReportGeneratorRegistry;
 use App\Repository\TaskRepository;
 use App\Transformer\TaskTransformer;
+use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class ReportController extends AbstractController
@@ -56,7 +56,7 @@ class ReportController extends AbstractController
                 $request->query->get(self::REPORT_QUERY_FORMAT),
                 $user
             );
-        } catch (ExceptionInterface $exception) {
+        } catch (Exception $exception) {
             return new Response('Invalid request format', 400);
         }
 

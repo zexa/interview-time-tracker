@@ -41,7 +41,7 @@ class TaskController
     }
 
     /**
-     * @Route("/tasks")
+     * @Route("/tasks", methods={"GET"})
      * @param Request $request
      * @param UserInterface|User $user
      * @return Response
@@ -77,7 +77,7 @@ class TaskController
     }
 
     /**
-     * @Route("/tasks", methods="post")
+     * @Route("/tasks", methods={"POST"})
      * @param Request $request
      * @param UserInterface&User $user
      * @return Response
