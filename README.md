@@ -80,31 +80,3 @@ limit".
 Nekalbu apie menkus patobulinimus, tokius kaip pdf'o grazinima ar kitu reportu
 patobulinimus, ten viskas mano nuomuone dabar paprasta ir patobulinti taipat
 butu nesunku.
-
-### Endpoints
-Endpoint: POST /login
-Description: Login
-Response: jwt
-
-Endpoint: POST /register
-Description: Register
-Response: jwt
-
-Endpoint: GET /tasks
-Description: Get all tasks
-Query Parameters:
-* page
-* page_size
-Response: [task_public]
-
-Endpoint: POST /tasks
-Description: Create task
-Payload: task_public
-
-Endpoint: GET /report
-Description: Get report
-Query Parameters:
-* date_from: DateTimeImmutable
-* date_to: DateTimeImmutable
-* format: ReportFormat
-
