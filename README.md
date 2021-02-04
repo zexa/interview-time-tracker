@@ -20,6 +20,11 @@ docker-compose -f docker/docker-compose.yml up --build -d
 docker-compose -f docker/docker-compose.yml exec fpm /bin/sh
 composer install
 bin/console doctrine:migrations:migrate
+mkdir -p config/jwt
+chown -R www-data:www-data config/jwt
+chmod -R 644 config/jwt/*
+openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout # use password pass
 ```
 
 Afterwards, the application should be reachable via http://localhost:8080
