@@ -14,7 +14,8 @@ https://github.com/zexa/interview-time-tracker-frontend
 
 ## Usage
 ```
-git clone ...
+git clone git@github.com:zexa/interview-time-tracker.git
+# git clone https://github.com/zexa/interview-time-tracker.git
 cd interview-time-tracker
 docker-compose -f docker/docker-compose.yml up --build -d
 docker-compose -f docker/docker-compose.yml exec fpm /bin/sh
