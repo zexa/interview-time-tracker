@@ -89,7 +89,7 @@ class XlsxReportGenerator implements ReportGeneratorInterface
             throw new ReportGenerationException($exception->getMessage());
         }
 
-        $filePath = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
+        $filePath = $this->fileNameGenerator->generateBackendFilepath();
 
         try {
             (new Xlsx($spreadsheet))

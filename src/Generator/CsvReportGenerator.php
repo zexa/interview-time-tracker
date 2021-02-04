@@ -48,7 +48,7 @@ class CsvReportGenerator implements ReportGeneratorInterface
      */
     public function generate(array $publicTasks, ReportParameters $reportParameters): File
     {
-        $filePath = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
+        $filePath = $this->fileNameGenerator->generateBackendFilepath();
         $fileResource = fopen($filePath, 'w');
         fputs(
            $fileResource,

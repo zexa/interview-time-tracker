@@ -27,7 +27,7 @@ class FileFactory
         string $filePath,
         string $mimeType
     ): File {
-        $this->fileNameGenerator->generateBackendFilepath($reportParameters);
+        $this->fileNameGenerator->generateBackendFilepath();
         $file = (new File())
             ->setName($this->fileNameGenerator->generateFrontendFilename($reportParameters))
             ->setPath($filePath)

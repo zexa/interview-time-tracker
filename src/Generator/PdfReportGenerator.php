@@ -63,7 +63,7 @@ class PdfReportGenerator implements ReportGeneratorInterface
 
         $this->dompdf->loadHtml($content);
         $this->dompdf->render();
-        $fileName = $this->fileNameGenerator->generateBackendFilepath($reportParameters);
+        $fileName = $this->fileNameGenerator->generateBackendFilepath();
         file_put_contents(
             $fileName,
             $this->dompdf->output()
