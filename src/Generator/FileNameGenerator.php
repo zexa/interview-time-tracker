@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Generator;
 
 use App\Entity\ReportParameters;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class FileNameGenerator
 {
@@ -37,17 +36,16 @@ class FileNameGenerator
         );
     }
 
-    public function generateBackendFilename(ReportParameters $reportParameters): string
+    public function generateBackendFilename(): string
     {
         return $this->uuidGenerator->generateString();
     }
 
     /**
-     * @param ReportParameters $reportParameters
      * @return string
      */
-    public function generateBackendFilepath(ReportParameters $reportParameters): string
+    public function generateBackendFilepath(): string
     {
-        return $this->savePath . '/' . $this->generateBackendFilename($reportParameters);
+        return $this->savePath . '/' . $this->generateBackendFilename();
     }
 }
