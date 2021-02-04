@@ -6,7 +6,7 @@ The task consists of writing a little time tracking application.
 This repository stores the API code for the above mentioned application.
 
 Please find the instructions for the frontend part of the application below:
-TODO: Add frontend link here
+https://github.com/zexa/interview-time-tracker-frontend
 
 ## Requirements
 * docker-compose (tested with version 1.27.4)
